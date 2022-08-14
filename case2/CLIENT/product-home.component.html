@@ -1,0 +1,50 @@
+<mat-card *ngIf="hideEditForm" style="margin-bottom: 10vh;">
+    <img src="../assets/images/Untitled.png">
+    <mat-card-header layout="row">
+    <mat-card-title style="margin-bottom: 4vh;">
+    <span>{{ msg }}</span>
+    </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+    <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+    <div class="center-header">Product No.</div>
+    </th>
+    <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+    </ng-container>
+    <!-- Date Column -->
+    <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+    <div class="center-header">Name</div>
+    </th>
+    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+    <!-- Vendor Id Column -->
+    <ng-container matColumnDef="costprice">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+    <div class="center-header">Price</div>
+    </th>
+    <td mat-cell *matCellDef="let element"> {{element.costprice}} </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="select(row)">></tr>
+    </table>
+    <div class="padtop15">
+    <mat-icon (click)="newProduct()" matTooltip="Add New Product" class="addicon" color="primary">
+    control_point
+    </mat-icon>
+    </div>
+    </mat-card-content>
+   </mat-card>
+   <mat-card *ngIf="!hideEditForm">
+    <mat-card-header layout="row">
+    <mat-card-title><span>{{ msg }}</span></mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+    <app-product-detail [selectedProduct]="selectedProduct" [vendors]="vendors$ | async"
+    (cancelled)="cancel('cancelled')" (saved)="save($event)" (deleted)="delete($event)">
+    </app-product-detail>
+    </mat-card-content>
+   </mat-card>
+   <mat-paginator [length]=size [pageSize]=5></mat-paginator>
